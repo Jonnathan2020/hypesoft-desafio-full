@@ -1,5 +1,5 @@
 # DESAFIO HYPESOFT - GESTOR DE PRODUTOS DASHBOARD #
-
+## Projeto em fase de desenvolvimento ##
 
 # Gestor de Produtos – Backend API
 
@@ -9,9 +9,10 @@ Projeto focado em boas práticas, separação de responsabilidades e integraçã
 
 ----
 
-## 🚀 Funcionalidades Implementadas
+## 🚀 Funcionalidades
 
-### 🔐 Autenticação e Autorização
+### 🔐 Autenticação e Autorização -
+* NÃO IMPLEMENTADO TOTALMENTE *
 
 * Integração com **Keycloak** (OAuth2 / OpenID Connect)
 * Validação automática de **JWT**
@@ -38,7 +39,6 @@ Projeto focado em boas práticas, separação de responsabilidades e integraçã
 * CRUD completo
 * Associação com produtos
 * Integridade referencial
-* Bloqueio de exclusão quando vinculada a produtos
 
 ---
 
@@ -168,6 +168,7 @@ Aplicação frontend do **Gestor de Produtos**, desenvolvida em **Next.js 14**, 
 ## 🎯 Funcionalidades
 
 ### 🔐 Autenticação
+NÃO IMPLEMENTADO TOTALMENTE 
 
 * Login via Keycloak
 * Proteção de rotas
@@ -301,7 +302,7 @@ http://localhost:3000
 ## 📌 Status do Projeto
 
 ✔️ Frontend completo
- Integrado com backend
+ Integrado com backend(Pendente integração total das funcionalidades)
 Pronto para produção
 
 ---
