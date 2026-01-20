@@ -1,0 +1,139 @@
+version: "3.9"
+
+services:
+  # ===============================
+  # MongoDB
+  # ===============================
+  mongo:
+    image: mongo:5.0
+    container_name: GestorProdutosDB
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    healthcheck:
+      test: >
+        echo 'db.runCommand("ping").ok' |
+        mongosh --username admin --password admin123 --authenticationDatabase admin --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - hypesoft-net
+
+  # ===============================
+  # Mongo Express
+  # ===============================
+  mongo-express:
+    image: mongo-express:0.54
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin123
+      ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin123@mongo:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - hypesoft-net
+
+  # ===============================
+  # Keycloak
+  # ===============================
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    container_name: keycloak
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak-import.json:/opt/keycloak/data/import/keycloak-import.json:ro
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin123
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY: edge
+      KC_HOSTNAME_STRICT: "false"
+    command: start-dev --import-realm
+    networks:
+      - hypesoft-net
+
+  # ===============================
+  # Backend (.NET 9)
+  # ===============================
+  backend:
+    container_name: hypesoft-api
+    build:
+      context: ./src             # Contexto = pasta src que contém todos os projetos
+      dockerfile: Hypesoft.API/dockerfile
+    ports:
+      - "8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      MONGO_CONNECTION_STRING: mongodb://admin:admin123@localhost:27017/GestorProdutosDB?authSource=admin
+      KEYCLOAK_AUTHORITY: http://keycloak:8080/realms/hypesoft
+      KEYCLOAK_AUDIENCE: hypesoft-api
+    depends_on:
+      mongo:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    networks:
+      - hypesoft-net
+
+       # ===============================
+  # Frontend (Next.js)
+  # ===============================
+  frontend:
+    container_name: gestorprodutos-web
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3000/api
+      NEXT_PUBLIC_KEYCLOAK_URL: http://keycloak:8080
+      NEXT_PUBLIC_KEYCLOAK_REALM: hypesoft
+      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: hypesoft-frontend
+    depends_on:
+      - backend
+      - keycloak
+    networks:
+      - hypesoft-net
+
+
+    # Nginx como Reverse Proxy
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "3001 :80"
+      - "5001:5000"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - hypesoft-net
+
+volumes:
+  mongo-data:
+
+networks:
+  hypesoft-net:
+    driver: bridge
