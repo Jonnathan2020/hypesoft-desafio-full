@@ -153,8 +153,8 @@ docker-compose up -d
 ## 📌 Status do Projeto
 
 ✔️ Backend completo
-✔️ Arquitetura robusta
-✔️ Pronto para evolução e produção
+ Arquitetura robusta
+ Pronto para evolução e produção
 
 ---
 
@@ -301,7 +301,7 @@ http://localhost:3000
 ## 📌 Status do Projeto
 
 ✔️ Frontend completo
-✔️ Integrado com backend
-✔️ Pronto para produção
+ Integrado com backend
+Pronto para produção
 
 ---
