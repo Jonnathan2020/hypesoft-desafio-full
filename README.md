@@ -156,6 +156,19 @@ docker-compose up -d
  Arquitetura robusta
  Pronto para evolução e produção
 
+<img width="1440" height="690" alt="1" src="https://github.com/user-attachments/assets/c37fe521-0239-4846-b2be-76bb527a4265" />
+
+<img width="1434" height="688" alt="3r" src="https://github.com/user-attachments/assets/65e7b1cf-218a-42be-beab-fbec6212c9ff" />
+
+<img width="1434" height="688" alt="3r" src="https://github.com/user-attachments/assets/0a7b31fa-f1a5-4f52-a4fc-03b8d4035e66" />
+
+
+
+
+
+
+ 
+
 ---
 
 
@@ -304,5 +317,13 @@ http://localhost:3000
 ✔️ Frontend completo
  Integrado com backend(Pendente integração total das funcionalidades)
 Pronto para produção
+
+<img width="1435" height="775" alt="front-home" src="https://github.com/user-attachments/assets/2857b426-26c7-4db0-b288-39c18541f78e" />
+
+<img width="1435" height="761" alt="front-produtos" src="https://github.com/user-attachments/assets/acccb67b-708a-4ba6-a12f-dd35c3f95fd4" />
+
+<img width="1440" height="777" alt="ESTOQUE" src="https://github.com/user-attachments/assets/581d2004-9295-421a-a533-e26146e54caa" />
+
+<img width="1282" height="788" alt="categorias" src="https://github.com/user-attachments/assets/989ba4ac-fca9-41d5-9518-ddfd6107ea4b" />
 
 ---
